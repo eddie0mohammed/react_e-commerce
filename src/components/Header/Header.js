@@ -1,15 +1,17 @@
 import React from 'react'
 import {Link } from 'react-router-dom';
+import {connect} from 'react-redux';
+import {compose} from 'redux';
 
 import './Header.styles.scss';
 import Logo from './crown.svg';
+import CartIcon from '../Header/cart-icon/cartIcon';
+import CartDropdown from '../cartDropdown/cardDropdown';
 
 import {auth} from '../../firebase/firebase.utils';
 
 const Header = (props) => {
     
-    const {user} = props;
-
     return (
         <div className="header">
             <div>
@@ -23,16 +25,30 @@ const Header = (props) => {
                 <Link className="option" to='/shop'>Shop</Link>
                 <Link className="option" to='/contact'>Contact</Link>
                 {
-                    user ?
+                    props.currentUser ?
                     <div className="option" onClick={() => auth.signOut()}>Sign Out</div>
                     :
                     <Link className="option" to='/signin'>Sign In</Link>
                     
                 }
+                {props.currentUser && <CartIcon /> }
             </div>
+            {!props.cartVisibility && 
+                <CartDropdown />
+            }
             
         </div>
     )
 }
 
-export default Header
+const mapStateToProps = (state ) => {
+    return {
+        currentUser: state.user.currentUser,
+        cartVisibility: state.cart.hidden,
+    }
+}
+
+export default compose(
+
+    connect(mapStateToProps),
+)(Header)
