@@ -6,6 +6,7 @@ import PreviewCollection from '../../components/previewCollection/PreviewCollect
 import {connect} from 'react-redux';
 
 const collectionsOverview = (props) => {
+    // console.log(props.collections);
     // console.log(Object.entries(props.collections));
     return (
         <div className="collections-overview">
@@ -19,8 +20,9 @@ const collectionsOverview = (props) => {
 }
 
 const mapStateToProps = (state) => {
+    // console.log(state.shop.collections)
     return {
-        collections: state.shop.collections
+        collections: state.shop.collections ? state.shop.collections : []
     }
 }
 
